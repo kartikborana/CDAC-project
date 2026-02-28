@@ -24,63 +24,66 @@ public class SecurityConfiguration {
     private final CustomJwtFilter jwtFilter;
     private final CustomUserDetailsServiceImpl userDetailsService;
     private final CorsConfigurationSource corsConfigurationSource;
+    private final OAuthUserService oAuthUserService;
+    private final OAuthSuccessHandler oAuthSuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // REST API → no CSRF
-            .csrf(csrf -> csrf.disable())
-            
-            // Enable CORS with configuration source
-            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                // REST API → no CSRF
+                .csrf(csrf -> csrf.disable())
 
-            // JWT → Stateless
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Enable CORS with configuration source
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
-            // Authorization rules - allow public access to categories, food items, and auth endpoints
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login", 
+                // OAuth2 needs sessions briefly (for the redirect handshake), then we go
+                // stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+
+                // Authorization rules
+                .authorizeHttpRequests(auth -> auth
+                        // Standard auth endpoints
+                        .requestMatchers("/api/auth/login",
                                 "/api/auth/register-customer",
                                 "/api/auth/register-staff",
-                                "/api/auth/register-admin").permitAll()
-                .requestMatchers("/api/categories/**").permitAll()
-                .requestMatchers("/api/food-items/**").permitAll()
-                .requestMatchers("/api/users/email/**").permitAll()
-                .requestMatchers("/api/users").permitAll() // Allow registration
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                .anyRequest().authenticated()
-            )
+                                "/api/auth/register-admin")
+                        .permitAll()
+                        // OAuth2 endpoints — must be public
+                        .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                        // Public API endpoints
+                        .requestMatchers("/api/categories/**").permitAll()
+                        .requestMatchers("/api/food-items/**").permitAll()
+                        .requestMatchers("/api/users/email/**").permitAll()
+                        .requestMatchers("/api/users").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .anyRequest().authenticated())
 
-            // JWT filter
-            .addFilterBefore(jwtFilter,
-                    UsernamePasswordAuthenticationFilter.class);
+                // JWT filter for all normal API requests
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // Google OAuth2 Login
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(u -> u.userService(oAuthUserService))
+                        .successHandler(oAuthSuccessHandler));
 
         return http.build();
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider();
-
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
-
         return provider;
     }
 
-    
-    // Used during login
     @Bean
     AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // Password hashing
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
