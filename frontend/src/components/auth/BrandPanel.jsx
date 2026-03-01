@@ -8,7 +8,13 @@ const BrandPanel = () => (
             <p className="brand-tagline">Digital Menu &amp; Order Management</p>
 
             <div className="brand-features">
-                <div className="feature-item">
+                <div
+                    className="feature-item"
+                    onClick={() => window.location.href = '/menu'}
+                    style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
+                    onMouseOver={(e) => e.currentTarget.style.transform = 'translateX(5px)'}
+                    onMouseOut={(e) => e.currentTarget.style.transform = 'translateX(0)'}
+                >
                     <div className="feature-icon">
                         <UserCircle size={24} />
                     </div>

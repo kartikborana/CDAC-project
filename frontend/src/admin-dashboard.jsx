@@ -196,6 +196,7 @@ const AdminDashboard = ({ onLogout }) => {
   };
 
   const handleDeleteMenuItem = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this menu item?")) return;
     try {
       await apiService.foodItemAPI.delete(id);
       setMenuItems(prev => prev.filter(item => item.id !== id));
@@ -213,7 +214,7 @@ const AdminDashboard = ({ onLogout }) => {
     try {
       const updated = await apiService.foodItemAPI.update(item.id, {
         name: item.name, description: item.description, price: item.price,
-        isVeg: item.isVeg, isAvailable: !currentAvailable, imageurl: item.imageurl, categoryId: item.categoryId,
+        isVeg: item.isVeg ?? item.veg ?? true, isAvailable: !currentAvailable, imageurl: item.imageurl, categoryId: item.categoryId,
       });
       setMenuItems(prev => prev.map(it => (it.id === item.id ? updated : it)));
       setMenuError('');
@@ -221,13 +222,17 @@ const AdminDashboard = ({ onLogout }) => {
   };
 
   const handleMenuSearchChange = e => setMenuSearch(e.target.value);
-  const handleViewMenuItem = (item) => { setSelectedMenuItem(item); setIsEditingItem(false); setEditItemForm(null); };
+  const handleViewMenuItem = (item) => {
+    setSelectedMenuItem(item); setIsEditingItem(false); setEditItemForm(null);
+    setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+  };
   const handleStartEditItem = (item) => {
     setSelectedMenuItem(item); setIsEditingItem(true);
     setEditItemForm({
       name: item.name || '', description: item.description || '', price: item.price || '',
-      imageurl: item.imageurl || '', isVeg: item.isVeg ?? true, isAvailable: item.isAvailable ?? item.available ?? true, categoryId: item.categoryId || ''
+      imageurl: item.imageurl || '', isVeg: item.isVeg ?? item.veg ?? true, isAvailable: item.isAvailable ?? item.available ?? true, categoryId: item.categoryId || ''
     });
+    setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
   };
   const handleEditItemChange = (e) => {
     const { name, value, type, checked } = e.target;

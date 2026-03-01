@@ -1,6 +1,6 @@
 // api.js - Backend Integration Service
 // Base URL for your Spring Boot backend
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://3.27.157.241:8080/api';
 
 // ==================== AUTH API ====================
 export const authAPI = {

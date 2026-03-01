@@ -66,9 +66,9 @@ const CustomerMenuApp = ({ user, onLogout }) => {
         if (apiService) {
           setLoading(true);
           const categories = await apiService.categoryAPI.getAll();
-          setMenuCategories(categories.filter(cat => cat.isActive));
+          setMenuCategories(categories.filter(cat => cat.isActive || cat.active));
           const items = await apiService.foodItemAPI.getAll();
-          setMenuItems(items.filter(item => item.isAvailable));
+          setMenuItems(items.filter(item => item.isAvailable || item.available));
           setLoading(false);
         }
       } catch (err) {
@@ -146,7 +146,7 @@ const CustomerMenuApp = ({ user, onLogout }) => {
         });
       } else if (apiService && apiService.orderAPI) {
         const token = localStorage.getItem('token');
-        await fetch('http://localhost:8080/api/payments', {
+        await fetch('http://3.27.157.241:8080/api/payments', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -194,9 +194,11 @@ const CustomerMenuApp = ({ user, onLogout }) => {
   };
 
   const filteredItems = menuItems.filter(item => {
-    const matchesCategory = activeCategory === 'all' || item.categoryId === activeCategory;
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = activeCategory === 'all' || item.categoryId === activeCategory || item.category === activeCategory;
+    const safeName = item.name || '';
+    const safeDesc = item.description || '';
+    const matchesSearch = safeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      safeDesc.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 

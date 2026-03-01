@@ -22,8 +22,6 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     private final FoodCategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-   
-
     @Override
     public FoodCategoryDto createCategory(FoodCategoryDto categoryDto) {
         FoodCategory category = modelMapper.map(categoryDto, FoodCategory.class);
@@ -40,8 +38,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     @Override
     public FoodCategoryDto getCategoryById(Long id) {
         FoodCategory category = categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Food category not found with id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Food category not found with id : " + id));
 
         return modelMapper.map(category, FoodCategoryDto.class);
     }
@@ -57,11 +54,11 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     @Override
     public FoodCategoryDto updateCategory(Long id, FoodCategoryDto categoryDto) {
         FoodCategory existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Food category not found with id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Food category not found with id : " + id));
 
         // ModelMapper will update only non-null fields (your config)
         modelMapper.map(categoryDto, existingCategory);
+        existingCategory.setId(id); // Prevent ID from being overwritten to null
 
         FoodCategory updatedCategory = categoryRepository.save(existingCategory);
         return modelMapper.map(updatedCategory, FoodCategoryDto.class);
@@ -70,10 +67,9 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     @Override
     public void deleteCategory(Long id) {
         FoodCategory category = categoryRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Food category not found with id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Food category not found with id : " + id));
 
-        category.setIsActive(false);   // soft delete
+        category.setIsActive(false); // soft delete
         categoryRepository.save(category);
 
     }

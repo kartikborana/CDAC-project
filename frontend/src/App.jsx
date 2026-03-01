@@ -15,6 +15,13 @@ const App = () => {
   // Check if user is already logged in (from localStorage)
   useEffect(() => {
     if (isOAuthCallback) return; // Let OAuthCallback handle this
+
+    // Check if URL is explicitly requesting the menu
+    if (window.location.pathname === '/menu' || window.location.pathname === '/customer-menu') {
+      setCurrentView('customer-menu');
+      return;
+    }
+
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
       const user = JSON.parse(savedUser);

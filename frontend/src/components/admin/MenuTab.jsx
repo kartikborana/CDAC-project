@@ -104,8 +104,8 @@ const MenuTab = ({
                             <td>{category ? category.name : (item.category || '-')}</td>
                             <td><strong>₹{item.price}</strong></td>
                             <td>
-                                <span style={{ color: item.isVeg ? '#10B981' : '#EF4444', fontWeight: 600 }}>
-                                    {item.isVeg ? '🟢 Veg' : '🔴 Non-Veg'}
+                                <span style={{ color: (item.isVeg ?? item.veg) ? '#10B981' : '#EF4444', fontWeight: 600 }}>
+                                    {(item.isVeg ?? item.veg) ? '🟢 Veg' : '🔴 Non-Veg'}
                                 </span>
                             </td>
                             <td>{item.orders ?? '-'}{item.orders ? ' orders' : ''}</td>
@@ -146,7 +146,7 @@ const MenuTab = ({
                 <p><strong>Name:</strong> {selectedMenuItem.name}</p>
                 <p><strong>Description:</strong> {selectedMenuItem.description}</p>
                 <p><strong>Price:</strong> ₹{selectedMenuItem.price}</p>
-                <p><strong>Type:</strong> {selectedMenuItem.isVeg ? 'Veg' : 'Non-Veg'}</p>
+                <p><strong>Type:</strong> {(selectedMenuItem.isVeg ?? selectedMenuItem.veg) ? 'Veg' : 'Non-Veg'}</p>
                 <p><strong>Available:</strong> {(selectedMenuItem.isAvailable ?? selectedMenuItem.available) ? 'Yes' : 'No'}</p>
             </div>
         )}

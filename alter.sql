@@ -1,0 +1,1 @@
+ALTER TABLE food_items MODIFY COLUMN imageurl VARCHAR(255) DEFAULT '';

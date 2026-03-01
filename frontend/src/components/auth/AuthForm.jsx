@@ -157,7 +157,7 @@ const AuthForm = ({
             {/* Google OAuth Button */}
             <button
                 type="button"
-                onClick={() => window.location.href = 'http://localhost:8080/oauth2/authorization/google'}
+                onClick={() => window.location.href = 'http://3.27.157.241:8080/oauth2/authorization/google'}
                 style={{
                     width: '100%',
                     padding: '12px 16px',
