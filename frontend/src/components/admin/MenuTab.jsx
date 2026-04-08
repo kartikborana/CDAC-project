@@ -83,56 +83,58 @@ const MenuTab = ({
             </form>
         )}
 
-        <table className="data-table">
-            <thead>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Type</th>
-                    <th>Orders</th>
-                    <th>Available</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {filteredMenuItems.map(item => {
-                    const category = categories.find(c => c.id === item.categoryId) || null;
-                    return (
-                        <tr key={item.id}>
-                            <td><strong>{item.name}</strong></td>
-                            <td>{category ? category.name : (item.category || '-')}</td>
-                            <td><strong>₹{item.price}</strong></td>
-                            <td>
-                                <span style={{ color: (item.isVeg ?? item.veg) ? '#10B981' : '#EF4444', fontWeight: 600 }}>
-                                    {(item.isVeg ?? item.veg) ? '🟢 Veg' : '🔴 Non-Veg'}
-                                </span>
-                            </td>
-                            <td>{item.orders ?? '-'}{item.orders ? ' orders' : ''}</td>
-                            <td>
-                                <div
-                                    className={`availability-toggle ${item.isAvailable ?? item.available ? 'active' : ''}`}
-                                    onClick={() => handleToggleAvailability(item)}
-                                />
-                            </td>
-                            <td>
-                                <div className="action-buttons">
-                                    <button className="table-action-btn view" type="button" onClick={() => handleViewMenuItem(item)}>
-                                        <Eye size={18} />
-                                    </button>
-                                    <button className="table-action-btn edit" type="button" onClick={() => handleStartEditItem(item)}>
-                                        <Edit size={18} />
-                                    </button>
-                                    <button className="table-action-btn delete" type="button" onClick={() => handleDeleteMenuItem(item.id)}>
-                                        <Trash2 size={18} />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </table>
+        <div className="table-responsive">
+            <table className="data-table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Type</th>
+                        <th>Orders</th>
+                        <th>Available</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredMenuItems.map(item => {
+                        const category = categories.find(c => c.id === item.categoryId) || null;
+                        return (
+                            <tr key={item.id}>
+                                <td><strong>{item.name}</strong></td>
+                                <td>{category ? category.name : (item.category || '-')}</td>
+                                <td><strong>₹{item.price}</strong></td>
+                                <td>
+                                    <span style={{ color: (item.isVeg ?? item.veg) ? '#10B981' : '#EF4444', fontWeight: 600 }}>
+                                        {(item.isVeg ?? item.veg) ? '🟢 Veg' : '🔴 Non-Veg'}
+                                    </span>
+                                </td>
+                                <td>{item.orders ?? '-'}{item.orders ? ' orders' : ''}</td>
+                                <td>
+                                    <div
+                                        className={`availability-toggle ${item.isAvailable ?? item.available ? 'active' : ''}`}
+                                        onClick={() => handleToggleAvailability(item)}
+                                    />
+                                </td>
+                                <td>
+                                    <div className="action-buttons">
+                                        <button className="table-action-btn view" type="button" onClick={() => handleViewMenuItem(item)}>
+                                            <Eye size={18} />
+                                        </button>
+                                        <button className="table-action-btn edit" type="button" onClick={() => handleStartEditItem(item)}>
+                                            <Edit size={18} />
+                                        </button>
+                                        <button className="table-action-btn delete" type="button" onClick={() => handleDeleteMenuItem(item.id)}>
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
 
         {/* View Details */}
         {selectedMenuItem && !isEditingItem && (

@@ -39,6 +39,12 @@ const customerStyles = `
     overflow: hidden;
   }
   
+  @media (max-width: 768px) {
+    .restaurant-header {
+      padding: 1.5rem 1rem 2rem;
+    }
+  }
+  
   .restaurant-header::before {
     content: '';
     position: absolute;
@@ -89,6 +95,47 @@ const customerStyles = `
     background: rgba(255,255,255,0.3);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(0,0,0,0.15);
+    padding: 0.4rem 0.4rem 0.4rem 1rem;
+    border-radius: 50px;
+  }
+  
+  .user-greeting {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  
+  .login-btn {
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
   }
   
   .restaurant-info {
@@ -201,6 +248,7 @@ const customerStyles = `
   .category-chip {
     flex-shrink: 0;
     padding: 0.75rem 1.25rem;
+    min-height: 44px; /* Touch target minimum height */
     background: var(--light-gray);
     border: 2px solid transparent;
     border-radius: 50px;
@@ -209,6 +257,9 @@ const customerStyles = `
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .category-chip:hover {
@@ -228,6 +279,12 @@ const customerStyles = `
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-section {
+      padding: 1rem;
+    }
   }
   
   .menu-grid {
@@ -339,12 +396,16 @@ const customerStyles = `
     color: white;
     border: none;
     padding: 0.625rem 1.5rem;
+    min-height: 44px;
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Manrope', sans-serif;
     font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .add-button:hover {
@@ -467,8 +528,8 @@ const customerStyles = `
   .close-cart {
     background: var(--light-gray);
     border: none;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -526,8 +587,8 @@ const customerStyles = `
   }
   
   .qty-btn {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: 8px;
     border: none;
     background: var(--primary);
@@ -694,6 +755,16 @@ const customerStyles = `
     
     .menu-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .cart-modal {
+      height: 90vh; /* Make it more full screen on tiny devices */
+      max-height: 90vh;
+    }
+    .place-order-btn {
+      padding: 1rem;
     }
   }
 

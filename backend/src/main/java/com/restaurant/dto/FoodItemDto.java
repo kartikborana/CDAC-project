@@ -25,7 +25,6 @@ public class FoodItemDto {
 
     private Boolean isAvailable;
 
-    @NotBlank(message = "Image URL is required")
     private String imageurl;
 
     @NotNull(message = "Category ID is required")

@@ -146,7 +146,8 @@ const CustomerMenuApp = ({ user, onLogout }) => {
         });
       } else if (apiService && apiService.orderAPI) {
         const token = localStorage.getItem('token');
-        await fetch('http://3.27.157.241:8080/api/payments', {
+        const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+        await fetch(`${baseUrl}/payments`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -209,7 +210,7 @@ const CustomerMenuApp = ({ user, onLogout }) => {
     <div className="customer-app">
       <style>{customerStyles}</style>
 
-      <RestaurantHeader restaurantData={restaurantData} onLogout={onLogout} />
+      <RestaurantHeader user={user} restaurantData={restaurantData} onLogout={onLogout} />
 
       <MenuSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
@@ -237,6 +238,7 @@ const CustomerMenuApp = ({ user, onLogout }) => {
       </div>
 
       <CartModal
+        user={user}
         cart={cart}
         cartTotal={cartTotal}
         gst={gst}

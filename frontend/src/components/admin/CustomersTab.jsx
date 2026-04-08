@@ -38,45 +38,47 @@ const CustomersTab = ({
         )}
 
         {!!filteredCustomers.length && (
-            <table className="data-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Total Orders</th>
-                        <th>Total Spent</th>
-                        <th>Last Order</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredCustomers.map(customer => {
-                        const statsForCustomer = getCustomerStat(customer.id);
-                        const lastOrderLabel = statsForCustomer.lastOrderDate
-                            ? statsForCustomer.lastOrderDate.toLocaleDateString()
-                            : '-';
-                        return (
-                            <tr key={customer.id}>
-                                <td><strong>{customer.name}</strong></td>
-                                <td>{customer.email}</td>
-                                <td>{statsForCustomer.totalOrders}</td>
-                                <td><strong>{formatPrice(statsForCustomer.totalSpent || 0)}</strong></td>
-                                <td>{lastOrderLabel}</td>
-                                <td>
-                                    <div className="action-buttons">
-                                        <button className="table-action-btn view" type="button">
-                                            <Eye size={18} />
-                                        </button>
-                                        <button className="table-action-btn edit" type="button">
-                                            <Edit size={18} />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <div className="table-responsive">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Total Orders</th>
+                            <th>Total Spent</th>
+                            <th>Last Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredCustomers.map(customer => {
+                            const statsForCustomer = getCustomerStat(customer.id);
+                            const lastOrderLabel = statsForCustomer.lastOrderDate
+                                ? statsForCustomer.lastOrderDate.toLocaleDateString()
+                                : '-';
+                            return (
+                                <tr key={customer.id}>
+                                    <td><strong>{customer.name}</strong></td>
+                                    <td>{customer.email}</td>
+                                    <td>{statsForCustomer.totalOrders}</td>
+                                    <td><strong>{formatPrice(statsForCustomer.totalSpent || 0)}</strong></td>
+                                    <td>{lastOrderLabel}</td>
+                                    <td>
+                                        <div className="action-buttons">
+                                            <button className="table-action-btn view" type="button">
+                                                <Eye size={18} />
+                                            </button>
+                                            <button className="table-action-btn edit" type="button">
+                                                <Edit size={18} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         )}
     </div>
 );

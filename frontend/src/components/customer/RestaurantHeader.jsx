@@ -1,7 +1,7 @@
 import React from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, User, LogIn } from 'lucide-react';
 
-const RestaurantHeader = ({ restaurantData, onLogout }) => (
+const RestaurantHeader = ({ user, restaurantData, onLogout }) => (
     <div className="restaurant-header">
         <div className="header-content">
             <div className="header-top">
@@ -12,12 +12,25 @@ const RestaurantHeader = ({ restaurantData, onLogout }) => (
                         <p>{restaurantData.cuisine} • {restaurantData.address}</p>
                     </div>
                 </div>
-                {onLogout && (
-                    <button className="logout-btn" onClick={onLogout}>
-                        <LogOut size={18} />
-                        Logout
-                    </button>
-                )}
+
+                <div className="header-actions">
+                    {user ? (
+                        <div className="user-profile">
+                            <span className="user-greeting">Hi, {user.name?.split(' ')[0] || user.email?.split('@')[0] || 'Guest'}</span>
+                            {onLogout && (
+                                <button className="logout-btn" onClick={onLogout} title="Logout">
+                                    <LogOut size={18} />
+                                    Logout
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <button className="login-btn" onClick={() => window.location.href = '/'} title="Login">
+                            <LogIn size={18} />
+                            Login
+                        </button>
+                    )}
+                </div>
             </div>
             <div className="table-badge">
                 🪑 Table {restaurantData.tableNumber}

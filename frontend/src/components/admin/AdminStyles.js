@@ -20,7 +20,6 @@ const adminStyles = `
   
   .admin-dashboard { display: flex; min-height: 100vh; }
   
-  /* Sidebar */
   .sidebar {
     width: var(--sidebar-width);
     background: var(--dark);
@@ -32,6 +31,19 @@ const adminStyles = `
     left: 0;
     top: 0;
     z-index: 100;
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+  
+  .mobile-close-btn {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: none;
   }
   
   .sidebar-header { padding: 2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -215,7 +227,13 @@ const adminStyles = `
   .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray); }
   
   /* Table */
-  .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  
+  .data-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
   .data-table thead { background: var(--light); }
   .data-table th { padding: 1rem; text-align: left; font-weight: 700; color: var(--gray); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); }
   .data-table td { padding: 1.25rem 1rem; border-bottom: 1px solid var(--border); color: var(--dark); font-size: 0.95rem; }
@@ -250,6 +268,27 @@ const adminStyles = `
   @media (max-width: 1200px) {
     .sidebar { transform: translateX(-100%); }
     .main-content { margin-left: 0; }
+    .mobile-close-btn { display: flex; }
+    .mobile-menu-btn { display: flex; }
+  }
+  
+  /* Ensure menu overlay exists for mobile sidebar */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
   }
   
   @media (max-width: 768px) {

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.restaurant.entity.OrderItem;
 
-public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
+import java.util.List;
 
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
+    List<OrderItem> findByFoodItemId(Long foodItemId);
 }

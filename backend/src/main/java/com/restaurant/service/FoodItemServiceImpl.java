@@ -13,6 +13,8 @@ import com.restaurant.entity.FoodItem;
 import com.restaurant.exception.ResourceNotFoundException;
 import com.restaurant.repository.FoodCategoryRepository;
 import com.restaurant.repository.FoodItemRepository;
+import com.restaurant.repository.OrderItemRepository;
+import com.restaurant.entity.OrderItem;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +25,7 @@ public class FoodItemServiceImpl implements FoodItemService {
 
 	private final FoodItemRepository foodItemRepository;
 	private final FoodCategoryRepository categoryRepository;
+	private final OrderItemRepository orderItemRepository;
 	private final ModelMapper modelMapper;
 
 	@Override
@@ -120,9 +123,14 @@ public class FoodItemServiceImpl implements FoodItemService {
 		FoodItem foodItem = foodItemRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Food item not found with id : " + id));
 
+		// Cascade delete: first remove order items that reference this food item
+		List<OrderItem> relatedOrderItems = orderItemRepository.findByFoodItemId(id);
+		if (!relatedOrderItems.isEmpty()) {
+			orderItemRepository.deleteAll(relatedOrderItems);
+		}
+
 		// Hard Delete
 		foodItemRepository.delete(foodItem);
-
 	}
 
 }

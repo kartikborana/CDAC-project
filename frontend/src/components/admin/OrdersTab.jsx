@@ -56,78 +56,80 @@ const OrdersTab = ({
         )}
 
         {!!filteredOrders.length && (
-            <table className="data-table">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Status</th>
-                        <th>Items</th>
-                        <th>Total Amount</th>
-                        <th>Created At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredOrders.map(order => {
-                        const itemsCount = Array.isArray(order.items)
-                            ? order.items.reduce((sum, it) => sum + (it.quantity || 0), 0)
-                            : 0;
-                        const createdAt = order.createdAt
-                            ? new Date(order.createdAt).toLocaleString()
-                            : '-';
-                        const statusClass = (order.status || '').toLowerCase();
-                        return (
-                            <tr key={order.orderId}>
-                                <td><strong>#{order.orderId}</strong></td>
-                                <td>
-                                    <span className={`status-badge ${statusClass}`}>
-                                        {order.status}
-                                    </span>
-                                </td>
-                                <td>{itemsCount} items</td>
-                                <td><strong>{formatPrice(order.totalAmount || 0)}</strong></td>
-                                <td>{createdAt}</td>
-                                <td>
-                                    <div className="action-buttons">
-                                        <button
-                                            className="table-action-btn edit"
-                                            type="button"
-                                            onClick={() => handleUpdateOrderStatus(order.orderId, 'PREPARING')}
-                                            disabled={['PREPARING', 'READY', 'COMPLETED', 'CANCELLED'].includes(order.status)}
-                                        >
-                                            Prep
-                                        </button>
-                                        <button
-                                            className="table-action-btn view"
-                                            type="button"
-                                            onClick={() => handleUpdateOrderStatus(order.orderId, 'READY')}
-                                            disabled={['READY', 'COMPLETED', 'CANCELLED'].includes(order.status)}
-                                        >
-                                            Ready
-                                        </button>
-                                        <button
-                                            className="table-action-btn view"
-                                            type="button"
-                                            onClick={() => handleUpdateOrderStatus(order.orderId, 'COMPLETED')}
-                                            disabled={['COMPLETED', 'CANCELLED'].includes(order.status)}
-                                        >
-                                            Done
-                                        </button>
-                                        <button
-                                            className="table-action-btn delete"
-                                            type="button"
-                                            onClick={() => handleUpdateOrderStatus(order.orderId, 'CANCELLED')}
-                                            disabled={['COMPLETED', 'CANCELLED'].includes(order.status)}
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <div className="table-responsive">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Status</th>
+                            <th>Items</th>
+                            <th>Total Amount</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredOrders.map(order => {
+                            const itemsCount = Array.isArray(order.items)
+                                ? order.items.reduce((sum, it) => sum + (it.quantity || 0), 0)
+                                : 0;
+                            const createdAt = order.createdAt
+                                ? new Date(order.createdAt).toLocaleString()
+                                : '-';
+                            const statusClass = (order.status || '').toLowerCase();
+                            return (
+                                <tr key={order.orderId}>
+                                    <td><strong>#{order.orderId}</strong></td>
+                                    <td>
+                                        <span className={`status-badge ${statusClass}`}>
+                                            {order.status}
+                                        </span>
+                                    </td>
+                                    <td>{itemsCount} items</td>
+                                    <td><strong>{formatPrice(order.totalAmount || 0)}</strong></td>
+                                    <td>{createdAt}</td>
+                                    <td>
+                                        <div className="action-buttons">
+                                            <button
+                                                className="table-action-btn edit"
+                                                type="button"
+                                                onClick={() => handleUpdateOrderStatus(order.orderId, 'PREPARING')}
+                                                disabled={['PREPARING', 'READY', 'COMPLETED', 'CANCELLED'].includes(order.status)}
+                                            >
+                                                Prep
+                                            </button>
+                                            <button
+                                                className="table-action-btn view"
+                                                type="button"
+                                                onClick={() => handleUpdateOrderStatus(order.orderId, 'READY')}
+                                                disabled={['READY', 'COMPLETED', 'CANCELLED'].includes(order.status)}
+                                            >
+                                                Ready
+                                            </button>
+                                            <button
+                                                className="table-action-btn view"
+                                                type="button"
+                                                onClick={() => handleUpdateOrderStatus(order.orderId, 'COMPLETED')}
+                                                disabled={['COMPLETED', 'CANCELLED'].includes(order.status)}
+                                            >
+                                                Done
+                                            </button>
+                                            <button
+                                                className="table-action-btn delete"
+                                                type="button"
+                                                onClick={() => handleUpdateOrderStatus(order.orderId, 'CANCELLED')}
+                                                disabled={['COMPLETED', 'CANCELLED'].includes(order.status)}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         )}
     </div>
 );

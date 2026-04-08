@@ -1,6 +1,6 @@
 // api.js - Backend Integration Service
 // Base URL for your Spring Boot backend
-const API_BASE_URL = 'http://3.27.157.241:8080/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
 // ==================== AUTH API ====================
 export const authAPI = {
@@ -18,12 +18,12 @@ export const authAPI = {
         password: userData.password
       })
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Registration failed');
     }
-    
+
     return await response.json();
   },
 
@@ -41,12 +41,12 @@ export const authAPI = {
         password: userData.password
       })
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Staff registration failed');
     }
-    
+
     return await response.json();
   },
 
@@ -64,12 +64,12 @@ export const authAPI = {
         password: userData.password
       })
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Admin registration failed');
     }
-    
+
     return await response.json();
   },
 
@@ -85,12 +85,12 @@ export const authAPI = {
         password: password
       })
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Login failed');
     }
-    
+
     const loginResponse = await response.json();
     // Store token in localStorage
     if (loginResponse.token) {
@@ -107,11 +107,11 @@ export const authAPI = {
         'Authorization': `Bearer ${token}`
       }
     });
-    
+
     if (!response.ok) {
       throw new Error('Not authenticated');
     }
-    
+
     return await response.json();
   },
 
@@ -123,11 +123,11 @@ export const authAPI = {
         'Authorization': `Bearer ${token}`
       }
     });
-    
+
     if (!response.ok) {
       throw new Error('User not found');
     }
-    
+
     return await response.json();
   },
 
@@ -198,6 +198,12 @@ export const categoryAPI = {
       },
       body: JSON.stringify(categoryData)
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || error.error || 'Failed to update category');
+    }
+
     return await response.json();
   },
 
@@ -273,6 +279,12 @@ export const foodItemAPI = {
       },
       body: JSON.stringify(itemData)
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || error.error || 'Failed to update food item');
+    }
+
     return await response.json();
   },
 
@@ -285,6 +297,12 @@ export const foodItemAPI = {
         'Authorization': `Bearer ${token}`
       }
     });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || error.error || 'Failed to delete food item');
+    }
+
     return response.ok;
   }
 };
@@ -327,12 +345,12 @@ export const orderAPI = {
         }))
       })
     });
-    
+
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Order creation failed');
     }
-    
+
     return await response.json();
   },
 

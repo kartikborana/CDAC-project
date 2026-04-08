@@ -33,7 +33,6 @@ public class FoodItem {
 	@Column(nullable = false)
 	private String name;
 
-	
 	private String description;
 
 	private Double price;
@@ -44,7 +43,7 @@ public class FoodItem {
 	@Column(nullable = false)
 	private Boolean isAvailable;
 
-	@Column(nullable = false)
+	@Column(columnDefinition = "TEXT")
 	private String imageurl;
 
 	@ManyToOne

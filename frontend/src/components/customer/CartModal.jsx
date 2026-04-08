@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShoppingCart, X, Plus, Minus } from 'lucide-react';
 
-const CartModal = ({ cart, cartTotal, gst, showCart, setShowCart, addToCart, removeFromCart, placeOrder }) => (
+const CartModal = ({ user, cart, cartTotal, gst, showCart, setShowCart, addToCart, removeFromCart, placeOrder }) => (
     <>
         {/* Floating Cart Button */}
         {cart.length > 0 && !showCart && (
@@ -60,8 +60,15 @@ const CartModal = ({ cart, cartTotal, gst, showCart, setShowCart, addToCart, rem
                             <span>Total</span>
                             <span>₹{cartTotal + gst}</span>
                         </div>
-                        <button className="place-order-btn" onClick={placeOrder}>
-                            Place Order ₹{cartTotal + gst}
+                        <button className="place-order-btn" onClick={() => {
+                            if (!user) {
+                                alert("Please login to place an order.");
+                                window.location.href = '/';
+                            } else {
+                                placeOrder();
+                            }
+                        }}>
+                            Place Order • ₹{cartTotal + gst}
                         </button>
                     </div>
                 </div>

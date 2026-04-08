@@ -16,19 +16,23 @@ const App = () => {
   useEffect(() => {
     if (isOAuthCallback) return; // Let OAuthCallback handle this
 
+    let user = null;
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      user = JSON.parse(savedUser);
+      setCurrentUser(user);
+    }
+
     // Check if URL is explicitly requesting the menu
     if (window.location.pathname === '/menu' || window.location.pathname === '/customer-menu') {
       setCurrentView('customer-menu');
       return;
     }
 
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      const user = JSON.parse(savedUser);
-      setCurrentUser(user);
+    if (user) {
       setCurrentView(getRoleView(user.role));
     }
-  }, []);
+  }, [isOAuthCallback]);
 
   const getRoleView = (role) => {
     switch (role) {
